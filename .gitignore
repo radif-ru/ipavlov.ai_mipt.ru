@@ -1,6 +1,11 @@
 # IntellijIdea files
 **/.idea
 
+# Celery
+**/celerybeat-schedule.bak
+**/celerybeat-schedule.dat
+**/celerybeat-schedule.dir
+
 # Собранные с помощью collect_static статические файлы
 **/staticfiles/
 
@@ -53,3 +58,4 @@
 **/venv38
 **/venv_3_9
 **/venv39
+
