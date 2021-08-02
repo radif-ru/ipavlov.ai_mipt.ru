@@ -1,6 +1,12 @@
 version: "3.7"
 
 services:
+  redis:
+    build:
+      context: ./docker/redis
+      dockerfile: Dockerfile
+    ports:
+      - "6379:6379"
   db:
     build:
       context: ./docker/postgres
