@@ -5,6 +5,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import Group
 from django.db import OperationalError, ProgrammingError
 
+from hospital.settings import ADMINISTRATOR, PATIENT, DOCTOR
 from users.models import HospitalUser
 
 
@@ -32,13 +33,13 @@ class Command(BaseCommand):
         try:
             if not Group.objects.exists():
                 Group.objects.create(
-                    name='пациент',
+                    name=ADMINISTRATOR,
                 )
                 Group.objects.create(
-                    name='врач'
+                    name=PATIENT
                 )
                 Group.objects.create(
-                    name='администратор'
+                    name=DOCTOR
                 )
         except OperationalError or ProgrammingError:
             self.create_admin()
