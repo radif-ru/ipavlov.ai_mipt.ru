@@ -36,10 +36,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rest_framework',
     'psycopg2',
+    'rest_framework',
     'djoser',
     'corsheaders',
+    'django_celery_beat',
+    'django_celery_results',
 
     'users.apps.UsersConfig',
 ]
@@ -140,11 +142,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Роли пользователей мед. учреждения
+ADMINISTRATOR = 'администратор'
+PATIENT = 'пациент'
+DOCTOR = 'врач'
+
+AUTH_USER_MODEL = 'users.HospitalUser'
+
 CORS_ALLOWED_ORIGINS = [
-    "https://example.com",
-    "https://sub.example.com",
     "http://localhost:8080",
-    "http://127.0.0.1:9000"
 ]
 
 CORS_ALLOW_METHODS = [
@@ -156,4 +162,22 @@ CORS_ALLOW_METHODS = [
     'PUT',
 ]
 
-AUTH_USER_MODEL = 'users.HospitalUser'
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    "DEFAULT_PARSER_CLASSES": [
+        "rest_framework.parsers.JSONParser",
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+}
+
+# Celery Configuration Options
+CELERY_TIMEZONE = "Europe/Moscow"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'django-db'
