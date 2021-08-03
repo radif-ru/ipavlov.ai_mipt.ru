@@ -10,3 +10,6 @@
 
 # Миграции
 **/migrations
+
+# Генерируемые PyTest данные
+**/.coverage

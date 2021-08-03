@@ -1,6 +1,9 @@
 # IntellijIdea files
 **/.idea
 
+# Генерируемые PyTest данные
+**/.coverage
+
 # Celery
 **/celerybeat-schedule.bak
 **/celerybeat-schedule.dat
