@@ -3,6 +3,7 @@ from django.db import models
 
 
 class HospitalUser(AbstractUser):
+    """Пользователь больницы"""
     SEX_CHOICES = [
         ('м', 'Мужской'),
         ('ж', 'Женский')
@@ -26,6 +27,7 @@ class HospitalUser(AbstractUser):
 
 
 class DoctorWorkingHours(models.Model):
+    """Рабочее время у доктора"""
     WORKING_DAY_CHOICES = (
         ('0', 'пн'),
         ('1', 'вт'),
@@ -64,6 +66,7 @@ class DoctorWorkingHours(models.Model):
 
 
 class DoctorVacation(models.Model):
+    """Отпуска у доктора"""
     doctor = models.ForeignKey(
         HospitalUser, verbose_name='Врач', on_delete=models.CASCADE
     )
@@ -80,6 +83,7 @@ class DoctorVacation(models.Model):
 
 
 class TimeTable(models.Model):
+    """Слоты, свободные промежутки времени для приёма пациентов"""
     doctor = models.ForeignKey(
         HospitalUser, verbose_name='Врач', on_delete=models.CASCADE
     )
