@@ -29,8 +29,15 @@
 > Метод авторизации. Входные данные: логин и пароль. 
 > Выходные данные: токен (необязательно JWT). `/api/token`
 
+# Запуск Celery
+### Автоматическая генерация слотов для всех врачей на неделю вперёд, происходит каждые 66 секунд
+#### Чтобы сгенерировались слоты нужно добавить пользователя в группу "врач" и в таблице "Рабочее время врачей" создать хотя бы 1 рабочий день в неделю
+> docker-compose exec web celery -A hospital beat
+
+> docker-compose exec web celery -A hospital worker -l INFO --pool=gevent --concurrency=333
+
 # Тестирование проекта
-> Выполнить команду `pytest` в корне Django проекта - ./hospital
+> Выполнить команду `docker-compose exec web pytest` в корне Django проекта
 
 # Запуск проекта
 > (Тестировалось на Docker Toolbox под Windows, на Linux возможно понадобится выдать права на исполнение файлов entrypoint.sh!)
@@ -57,21 +64,12 @@
 > docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic
 #### 5. Создать суперпользователя
 > docker-compose -f docker-compose.prod.yml exec web python manage.py createsuperuser
-#### 5. Создать группы
+#### 6. Создать группы. `2-5` можно пропустить - сразу запустить этот пункт
 > docker-compose -f docker-compose.prod.yml exec web python manage.py add_groups
 
- При запуске `python manage.py add_groups` создаются группы: пациент, врач, администратор 
+ При запуске `python manage.py add_groups` создаются группы: пациент, врач, администратор. 
  Если суперпользователя предварительно не создать вручную, то выполняются миграции, 
  генерируется суперпользователь `admin`. Пароль у админа `medicalqwerty`.
-
-
-# Запуск Celery
-## В процессе разработки!
-
-> celery -A hospital beat
-
-> celery -A hospital worker -l INFO --pool=solo
-
 
 # Задание
 
