@@ -33,13 +33,14 @@ class TestViews:
         data_in_page = json.loads(response.content.decode())
         assert isinstance(data_in_page[0], dict)
         assert len(data_in_page) == 3
+        print(response.content)
         assert response.content == \
-               '[{"id":1,"start_time":"2023-08-31T15:57:45+03:00",' \
-               '"stop_time":"2023-08-31T16:57:59+03:00"},' \
+               '[{"id":3,"start_time":"2023-08-31T00:00:00+03:00",' \
+               '"stop_time":"2023-08-31T00:00:00+03:00"},' \
                '{"id":2,"start_time":"2023-08-31T15:57:45+03:00",' \
                '"stop_time":"2023-08-31T15:57:45+03:00"},' \
-               '{"id":3,"start_time":"2023-08-31T00:00:00+03:00",' \
-               '"stop_time":"2023-08-31T00:00:00+03:00"}]'.encode()
+               '{"id":1,"start_time":"2023-08-31T15:57:45+03:00",' \
+               '"stop_time":"2023-08-31T16:57:59+03:00"}]'.encode()
 
     def test_all_entries(self, client):
         """Получение статистических данных: сколько записей на какой день"""
