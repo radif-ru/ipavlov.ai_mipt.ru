@@ -44,10 +44,8 @@ class DoctorWorkingHours(models.Model):
     working_day = models.CharField(
         verbose_name='Рабочий день', max_length=2, choices=WORKING_DAY_CHOICES)
 
-    start_time = models.TimeField(verbose_name='Начало', blank=True, null=True)
-    stop_time = models.TimeField(
-        verbose_name='Окончание', blank=True, null=True
-    )
+    start_time = models.TimeField(verbose_name='Начало')
+    stop_time = models.TimeField(verbose_name='Окончание')
 
     start_break_time = models.TimeField(
         verbose_name='Начало обеда', blank=True, null=True
@@ -57,12 +55,15 @@ class DoctorWorkingHours(models.Model):
     )
 
     def __str__(self):
-        return f'{self.doctor} - {self.get_working_day_display()}'
+        return f'{self.doctor}. W {self.get_working_day_display()} - ' \
+               f'{self.start_time} - {self.stop_time}. ' \
+               f'B {self.start_break_time} - {self.stop_break_time}'
 
     class Meta:
         verbose_name = 'Рабочее время врача'
         verbose_name_plural = 'Рабочее время врачей'
         unique_together = (('doctor', 'working_day'),)
+        ordering = ['working_day', 'start_time']
 
 
 class DoctorVacation(models.Model):
@@ -80,6 +81,7 @@ class DoctorVacation(models.Model):
     class Meta:
         verbose_name = 'Отпуск у врача'
         verbose_name_plural = 'Отпуска у врачей'
+        ordering = ['stop_time']
 
 
 class TimeTable(models.Model):
@@ -96,8 +98,9 @@ class TimeTable(models.Model):
     stop_time = models.DateTimeField(verbose_name='Окончание')
 
     def __str__(self):
-        return f'{self.start_time} - {self.stop_time}'
+        return f'{self.doctor}. {self.start_time} - {self.stop_time}'
 
     class Meta:
         verbose_name = 'Слот'
         verbose_name_plural = 'Слоты'
+        ordering = ['stop_time']
